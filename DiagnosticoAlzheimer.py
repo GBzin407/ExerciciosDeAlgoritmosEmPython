@@ -1,4 +1,4 @@
-#Grupo: Gabriel Irineu; Daan Huijskes; Marcos Nascimento; Lucas Paiva; Allan Silva.
+# Grupo: Gabriel Irineu; Daan Huijskes; Marcos Nascimento; Lucas Paiva; Allan Silva.
 
 import tkinter as tk
 from tkinter import messagebox
@@ -12,8 +12,6 @@ class AlzheimerChanceApp:
         
         self.chance = 0
         
-        
-        
         self.perguntas = [
             ("A pessoa apresenta perda de memória?", 1),
             ("A pessoa apresenta mudanças de humor ou personalidade?", 1),
@@ -26,8 +24,6 @@ class AlzheimerChanceApp:
         ]
         
         self.indice_pergunta = 0
-        self.resultado_label = None
-
         self.exibir_pergunta()
 
     def exibir_pergunta(self):
@@ -59,11 +55,13 @@ class AlzheimerChanceApp:
     def validar_idade(self):
         try:
             idade = int(self.entrada_idade.get()) 
+            if idade < 0 or idade > 120:
+                raise ValueError("Idade inválida.")
             if idade >= 65: 
                 self.chance += 1
             self.proxima_pergunta() 
         except ValueError:
-            messagebox.showerror("Erro de entrada", "Por favor, insira uma idade válida.")
+            messagebox.showerror("Erro de entrada", "Por favor, insira uma idade válida entre 0 e 120.")
 
     def incrementar_chance(self, valor):
         self.chance += valor
@@ -80,4 +78,26 @@ class AlzheimerChanceApp:
         for widget in self.root.winfo_children():
             widget.destroy()
         
-        resultado_texto = self.sint_chance
+        if self.chance >= 5:  # Exemplo de critério para alta chance
+            resultado_texto = "Alta chance de Alzheimer. Procure um especialista."
+        elif 3 <= self.chance < 5:
+            resultado_texto = "Chance moderada. Mantenha acompanhamento."
+        else:
+            resultado_texto = "Baixa chance. Continue com hábitos saudáveis."
+
+        resultado_label = tk.Label(self.root, text=resultado_texto, wraplength=500, bg="#f0f8ff", font=("Helvetica", 14))
+        resultado_label.pack(pady=20)
+        
+        reiniciar_button = tk.Button(self.root, text="Reiniciar", command=self.reiniciar, bg="#2196F3", fg="white", font=("Helvetica", 10))
+        reiniciar_button.pack(pady=(10, 20))
+
+    def reiniciar(self):
+        self.chance = 0
+        self.indice_pergunta = 0
+        self.exibir_pergunta()
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = AlzheimerChanceApp(root)
+    root.mainloop()
