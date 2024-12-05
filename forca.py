@@ -6,7 +6,7 @@ def jogoDaForca():
     palavraSecreta = random.choice(palavras)
     letrasCertas = ["-"] * len(palavraSecreta)
     letrasErradas = []
-    tentativas = len(palavraSecreta)  # Aqui está o número de tentativas, inicialmente igual ao número de letras.
+    tentativas = len(palavraSecreta)
     
     print("Bem-vindo ao jogo da forca!")
     print("A quantidade de tentativas é equivalente ao número de letras na palavra secreta.")
